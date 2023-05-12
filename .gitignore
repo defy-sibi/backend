@@ -1,0 +1,22 @@
+# Dependencies
+/node_modules/
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# Build output
+/dist/
+/build/
+
+# Cache
+.cache/
+.eslintcache
+.nyc_output/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
