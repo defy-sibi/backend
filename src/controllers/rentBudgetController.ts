@@ -4,7 +4,7 @@ import { runRentBudgetToZipcodeQuery } from '../database/query-executor';
 
 export const getRentBudgetToZipcode = async (req: Request, res: Response) => {
   const inputValue = parseInt(req.params.inputValue, 10);
-  if (isNaN(inputValue)) {
+  if (isNaN(inputValue) || inputValue <= 0 || inputValue.toString().length > 5) {
     res.status(400).json({ error: "Invalid input value" });
     return;
   }

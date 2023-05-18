@@ -1,4 +1,6 @@
 import { athena, params } from "./athena";
+import { pool } from './rds';
+
 
 const getQueryResults = async (queryExecutionId: string) => {
   const resultParams = {
@@ -34,5 +36,18 @@ export const runRentBudgetToZipcodeQuery = async (query: string) => {
     } else if (queryStatus === "CANCELLED") {
       console.error("Query cancelled:", queryExecutionId);
     }
+  }
+};
+
+
+//to add new user with deviceID
+export const runUserQuery = async (query: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query(query);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.release();
   }
 };

@@ -1,3 +1,5 @@
+
+// S3 bucket querying
 export function rentBudgetToZipcodeQuery(inputValue: number): string {
   return `
     SELECT
@@ -16,5 +18,16 @@ export function rentBudgetToZipcodeQuery(inputValue: number): string {
       OR ${inputValue} < "SAFMR_2BR"
       OR ${inputValue} < "SAFMR_3BR"
       OR ${inputValue} < "SAFMR_4BR";
+  `;
+}
+
+
+
+//RDS querying
+//adding new user with deviceID and name
+export function addUserQuery(name: string, deviceId: string): string {
+  return `
+    INSERT INTO users (name, device_id)
+    VALUES ('${name}', '${deviceId}');
   `;
 }
