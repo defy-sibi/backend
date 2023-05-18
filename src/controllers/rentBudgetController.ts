@@ -12,7 +12,6 @@ export const getRentBudgetToZipcode = async (req: Request, res: Response) => {
   try {
     const query = rentBudgetToZipcodeQuery(inputValue);
     const results = await runRentBudgetToZipcodeQuery(query);
-    console.log(results);
     res.json(results);
   } catch (error) {
     console.error("Error:", error);
