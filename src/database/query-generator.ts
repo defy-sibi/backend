@@ -45,3 +45,12 @@ export function addSearchHistory(deviceId: string): { text: string, values: any[
     values: [deviceId]
   };
 }
+
+
+// getting user name by deviceID
+export function getUserByDeviceIdQuery(deviceId: string) {
+  return {
+      text: 'SELECT * FROM "user" WHERE DeviceID = $1',
+      values: [deviceId],
+  };
+};

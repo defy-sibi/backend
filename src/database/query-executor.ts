@@ -71,3 +71,14 @@ export const runUserQuery = async (query: string) => {
     client.release();
   }
 };
+
+
+export const executeQuery = async (query: { text: string; values: any[]; }) => {
+  try {
+      const { rows } = await pool.query(query.text, query.values);
+      return rows;
+  } catch (error) {
+      console.error('An error occurred while executing the query:', error);
+      throw error;
+  }
+};
