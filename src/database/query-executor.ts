@@ -2,6 +2,25 @@ import { athena, params } from "./athena";
 import { pool } from './rds';
 
 
+// Takes an array of queries and executes them within a single transaction.
+export async function executeTransaction(queries: Array<{text: string, values: any[]}>) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    for(let query of queries){
+        await client.query(query.text, query.values);
+    }
+    await client.query('COMMIT');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+}
+
+
+//athena sample query
 const getQueryResults = async (queryExecutionId: string) => {
   const resultParams = {
     QueryExecutionId: queryExecutionId,
@@ -47,6 +66,7 @@ export const runUserQuery = async (query: string) => {
     await client.query(query);
   } catch (err) {
     console.error(err);
+    throw err;
   } finally {
     client.release();
   }

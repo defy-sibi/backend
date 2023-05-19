@@ -2,8 +2,9 @@
 
 import { Request, Response } from 'express';
 import { pool } from '../database/rds';
-import { addUserQuery } from '../database/query-generator';
-import { runUserQuery } from '../database/query-executor';
+import { addUserQuery, addSearchHistory } from '../database/query-generator';
+import { executeTransaction } from '../database/query-executor';
+
 
 export const getUserByDeviceId = async (req: Request, res: Response) => {
   const deviceId = req.params.deviceId;
@@ -34,7 +35,7 @@ export const getUserByDeviceId = async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send('An error occurred while retrieving user data.');
+    res.status(500).send('An error occurred while retrieving user data. Please try again.');
   }
 };
 
@@ -43,14 +44,17 @@ export const addNewUser = async (name: string, deviceId: string) => {
     if (!name || !deviceId) {
       throw new Error("Missing 'name' or 'deviceId'");
     }
-  
+    const addUser = addUserQuery(name, deviceId);
+    const updateUser = addSearchHistory(deviceId);
     try {
-      const query = addUserQuery(name, deviceId);
-      await runUserQuery(query);
+      await executeTransaction([addUser, updateUser]);
       return { message: 'User added successfully' };
     } catch (error) {
-      console.error('An error occurred while adding the user:', error);
-      throw error;
+      console.error('An error occurred while adding and updating the user:', error);
+      return {
+        status: 500,
+        message: 'An error occurred while adding and updating the user. Please try again.'
+      };
     }
   };
   

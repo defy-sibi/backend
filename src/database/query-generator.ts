@@ -23,11 +23,25 @@ export function rentBudgetToZipcodeQuery(inputValue: number): string {
 
 
 
-//RDS querying
+//RDS
 //adding new user with deviceID and name
-export function addUserQuery(name: string, deviceId: string): string {
-  return `
-    INSERT INTO users (name, device_id)
-    VALUES ('${name}', '${deviceId}');
-  `;
+export function addUserQuery(name: string, deviceId: string): { text: string; values: any[] } {
+  return {
+    text: 'INSERT INTO "user" (Name, DeviceID, User_since, Last_login) VALUES ($1, $2, NOW(), NOW())',
+    values: [name, deviceId],
+    };
+}
+
+//initializing row in search history table with user's deviceID. 
+export function addSearchHistory(deviceId: string): { text: string, values: any[] } {
+  return {
+    text: `
+      INSERT INTO "search_history" (
+        DeviceID,
+        Daily_search_counter,
+        Total_search_counter
+      ) values ($1, 0, 0)
+    `,
+    values: [deviceId]
+  };
 }
