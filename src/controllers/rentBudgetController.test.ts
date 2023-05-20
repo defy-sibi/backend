@@ -67,7 +67,7 @@ describe('getRentBudgetToZipcode', () => {
     (runRentBudgetToZipcodeQuery as jest.Mock).mockRejectedValue(new Error('Server error'));
     await getRentBudgetToZipcode(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'An error occurred while processing your request' });
+    expect(res.json).toHaveBeenCalledWith({ error: 'An error occurred while processing your request. Please try again.' });
   });
 
   it('should respond with query results for valid input value', async () => {

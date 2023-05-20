@@ -4,11 +4,9 @@ import { getRentBudgetToZipcode } from '../controllers/rentBudgetController';
 import { addNewUser } from '../controllers/userController';
 const router = Router();
 
+//userController
 //check deviceId to determine if user is new or existing
 router.get('/user/:deviceId', getUserByDeviceId);
-
-//based on given budget return affordable zipcodes
-router.get("/rentBudgetToZipcode/:inputValue", getRentBudgetToZipcode);
 
 
 //new user provides name, which is stored in db along with deviceid 
@@ -26,5 +24,11 @@ router.post('/addNewUsers', async (req, res) => {
     }
   }
 });
+
+
+// rentBudgetController
+//based on given budget return affordable zipcodes
+router.get("/rentBudgetToZipcode/:inputValue", getRentBudgetToZipcode);
+
 
 export default router;

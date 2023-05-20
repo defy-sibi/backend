@@ -17,6 +17,6 @@ export const getRentBudgetToZipcode = async (req: Request, res: Response) => {
     console.error("Error:", error);
     res
       .status(500)
-      .json({ error: "An error occurred while processing your request" });
+      .json({ error: "An error occurred while processing your request. Please try again." });
   }
 };

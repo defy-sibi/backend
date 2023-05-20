@@ -75,7 +75,7 @@ describe('getUserByDeviceId', () => {
     await getUserByDeviceId(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.send).toHaveBeenCalledWith('An error occurred while retrieving user data.');
+    expect(res.send).toHaveBeenCalledWith('An error occurred while retrieving user data. Please try again.');
   });
 
   it('should respond with 400 status code for missing deviceId', async () => {
