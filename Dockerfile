@@ -16,5 +16,8 @@ COPY . .
 # Expose the port the app will run on
 EXPOSE 8080
 
+# Define test command
+RUN npm test
+
 # Start the application
-CMD [ "npm" ]
+CMD [ "npm", "start" ]
