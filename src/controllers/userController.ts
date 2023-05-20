@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { pool } from '../database/rds';
 import { addUserQuery, addSearchHistory, getUserByDeviceIdQuery } from '../database/query-generator';
 import { executeTransaction, executeQuery } from '../database/query-executor';
-
+import mixpanelInstance from '../../config/mixpanel-config';
 
 export const getUserByDeviceId = async (req: Request, res: Response) => {
   const deviceId = req.params.deviceId;
@@ -49,8 +49,10 @@ export const addNewUser = async (name: string, deviceId: string) => {
     const updateUser = addSearchHistory(deviceId);
     try {
       await executeTransaction([addUser, updateUser]);
+      mixpanelInstance.track('User Added', { name, deviceId });  // tracking user added event
       return { message: 'User added successfully' };
     } catch (error) {
+      mixpanelInstance.track('User Add Failed', { name, deviceId, error: error }); // tracking failure event
       console.error('An error occurred while adding and updating the user:', error);
       return {
         status: 500,
