@@ -10,7 +10,7 @@ router.get('/user/:deviceId', getUserByDeviceId);
 
 
 //new user provides name, which is stored in db along with deviceid 
-router.post('/addNewUsers', async (req, res) => {
+router.post('/addNewUser', async (req, res) => {
   const { name, deviceId } = req.body;
 
   try {
